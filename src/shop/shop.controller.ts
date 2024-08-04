@@ -18,9 +18,9 @@ export class ShopController {
         return await this.shopService.fetchOneProduct(parseInt(id));
     }
 
-    @Post('createproduct')
+    @Post('/createproduct')
     async createProduct(@Body() body: createProductDto){
-        return await this.shopService.createProduct(
+        this.shopService.createProduct(
             body.name,
             body.description,
             body.category,

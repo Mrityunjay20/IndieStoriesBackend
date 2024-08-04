@@ -1,4 +1,4 @@
-import { IsArray, IsDecimal, IsNumber, IsString, IsUrl } from "class-validator";
+import { IsArray, IsDecimal, IsEmail, IsNumber, IsString, IsUrl } from "class-validator";
 
 
 export class createProductDto{
@@ -35,7 +35,7 @@ export class createProductDto{
     @IsString()
     video2:string;
 
-    @IsDecimal()
+    @IsNumber()
     price:number;
 
     @IsArray()
