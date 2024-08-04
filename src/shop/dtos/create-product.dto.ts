@@ -8,6 +8,33 @@ export class createProductDto{
     @IsString()
     description:string;
 
+    @IsString()
+    category:string;
+
+    @IsString()
+    sku:string;
+
+    @IsString()
+    origin:string;
+  
+    @IsString()
+    benefits:string;
+  
+    @IsString()
+    uses:string;
+  
+    @IsString()
+    ingredients:string;
+  
+    @IsString()
+    safetyInformation:string;
+  
+    @IsString()
+    video1:string;
+  
+    @IsString()
+    video2:string;
+
     @IsDecimal()
     price:number;
 
@@ -15,9 +42,6 @@ export class createProductDto{
     @IsString({ each: true })
     @IsUrl({}, { each: true })  // Optional: To validate each string as a valid URL
     imageUrl: string[];
-
-    @IsNumber()
-    categoryId:number;
 
     @IsString()
     bannerUrl:string;

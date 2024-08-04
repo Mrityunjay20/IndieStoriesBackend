@@ -8,6 +8,33 @@ export class updateProductDto {
   @IsNumber()
   id:number;
 
+  @IsString()
+  category:string;
+
+    @IsString()
+    sku:string;
+
+    @IsString()
+    origin:string;
+  
+    @IsString()
+    benefits:string;
+  
+    @IsString()
+    uses:string;
+  
+    @IsString()
+    ingredients:string;
+  
+    @IsString()
+    safetyInformation:string;
+  
+    @IsString()
+    video1:string;
+  
+    @IsString()
+    video2:string;
+
   @IsOptional()
   @IsString()
   description?: string;
@@ -19,10 +46,6 @@ export class updateProductDto {
   @IsOptional()
   @IsArray()
   imageUrl?: string[];
-
-  @IsOptional()
-  @IsNumber()
-  categoryId?: number;
 
   @IsOptional()
   @IsString()

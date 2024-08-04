@@ -9,28 +9,28 @@ export class ShopController {
     constructor(private shopService:ShopService){}
 
     @Get()
-    allItems(){
-        return this.shopService.fetchproducts();
+    async allItems(){
+        return await this.shopService.fetchproducts();
     }
 
     @Get(':id')
-    oneItem(@Param('id') id:string){
-        return this.shopService.fetchOneProduct(parseInt(id));
+    async oneItem(@Param('id') id:string){
+        return await this.shopService.fetchOneProduct(parseInt(id));
     }
 
     @Post('createproduct')
-    createProduct(@Body() body: createProductDto){
-        return this.shopService.createProduct(body.name,body.description,body.price,body.imageUrl,body.bannerUrl);
+    async createProduct(@Body() body: createProductDto){
+        return await this.shopService.createProduct(body.name,body.description,body.price,body.imageUrl,body.bannerUrl);
     }
 
     @Patch('updateproduct')
     async updateProduct(@Body() body: updateProductDto ) {
         const id = body.id;
-        return this.shopService.updateProduct(id,body);
+        return await this.shopService.updateProduct(id,body);
     }
 
     @Delete('deleteproduct')
     async deleteProduct(@Body() body:deleteProductDto){
-         return this.shopService.deleteProduct(body.id);
+         return await this.shopService.deleteProduct(body.id);
     }
 }
