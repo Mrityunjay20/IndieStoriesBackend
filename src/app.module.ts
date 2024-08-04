@@ -1,17 +1,24 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
-import { AdminModule } from './admin/admin.module';
-import { OrdersModule } from './orders/orders.module';
-import { ProductsModule } from './products/products.module';
-import { ShopModule } from './shop/shop.module';
+import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
-import { UserController } from './user/user.controller';
+import { ShopModule } from './shop/shop.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Product } from './shop/entities/product.entity';
 
 @Module({
-  imports: [UsersModule, AdminModule, OrdersModule, ProductsModule, ShopModule, AuthModule],
-  controllers: [AppController, UserController],
-  providers: [AppService],
+  controllers: [AppController],
+  providers: [AppService, AuthService],
+  imports: [AuthModule, ShopModule, TypeOrmModule.forRoot({
+    type: 'mysql',
+    host: 'localhost',
+    port: 3306,
+    username: 'root',
+    password: 'mrityunjaymanas',
+    database: 'testdb',
+    entities: [Product],
+    synchronize: true  //only to use in development enviornment NEVER IN production
+  })],
 })
 export class AppModule {}
