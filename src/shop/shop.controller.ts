@@ -20,7 +20,21 @@ export class ShopController {
 
     @Post('createproduct')
     async createProduct(@Body() body: createProductDto){
-        return await this.shopService.createProduct(body.name,body.description,body.price,body.imageUrl,body.bannerUrl);
+        return await this.shopService.createProduct(
+            body.name,
+            body.description,
+            body.category,
+            body.sku,
+            body.origin,
+            body.benefits,
+            body.uses, 
+            body.ingredients, 
+            body.safetyInformation, 
+            body.video1, 
+            body.video2 ,
+            body.price,
+            body.imageUrl,
+            body.bannerUrl);
     }
 
     @Patch('updateproduct')
