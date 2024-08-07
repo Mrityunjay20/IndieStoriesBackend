@@ -14,7 +14,7 @@ export class UserService {
   async findUser(email:string){
     const result = await this.usersRepository.findOneBy({"email":email})
     if(!result){
-      throw new NotFoundException("user doesnt exist");
+      return null
     }
     return result;
   }
@@ -24,7 +24,16 @@ export class UserService {
 
   async createUser(email: string, firebaseUid: string): Promise<User> {
     const user = this.usersRepository.create({ email, firebaseUid });
+    console.log("request coming"+ user)
     return await this.usersRepository.save(user);
+  }
+
+  async forSignup(email:string){
+    const result = await this.usersRepository.findOneBy({"email":email})
+    if(result){
+      return true;
+    }
+    return false;
   }
 
   // Other service methods (e.g., findOne, findAll) can go here

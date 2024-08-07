@@ -1,23 +1,27 @@
-// src/cart/cart.entity.ts
-import { Entity, PrimaryGeneratedColumn, OneToMany, OneToOne, CreateDateColumn, UpdateDateColumn, JoinColumn } from 'typeorm';
-import { CartItem } from './cartitem.entity';
+import { Entity, Column, PrimaryColumn, OneToOne, JoinColumn, OneToMany} from 'typeorm';
 import { User } from '../user/user.entity';
+import { CartItem } from './cart-Item.entity';
+import { Transform } from 'class-transformer';
 
 @Entity()
 export class Cart {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryColumn()
+  firebaseUid: string;
 
-  @OneToOne(() => User, user => user.cart, { onDelete: 'CASCADE' })
-  @JoinColumn()
+  @OneToOne(() => User, user => user.cart)
+  @JoinColumn({ name: 'firebaseUid', referencedColumnName: 'firebaseUid' })
   user: User;
 
   @OneToMany(() => CartItem, cartItem => cartItem.cart, { cascade: true })
   items: CartItem[];
 
-  @CreateDateColumn()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Transform(({ value }) => value.toISOString())
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+  @Transform(({ value }) => value.toISOString())
   updatedAt: Date;
 }
+
+

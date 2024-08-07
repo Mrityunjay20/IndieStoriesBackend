@@ -1,5 +1,4 @@
-// src/user/user.entity.ts
-import { Optional } from '@nestjs/common';
+import { Transform } from 'class-transformer';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne } from 'typeorm';
 import { Cart } from '../cart/cart.entity';
 
@@ -11,20 +10,20 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column({default:"user"})
-  @Optional()
-  
+  @Column({ default: 'user' })
   name: string;
 
   @Column({ unique: true, nullable: true })
   firebaseUid: string;
 
-  @OneToOne(() => Cart, cart => cart.user)
+  @OneToOne(() => Cart, cart => cart.user, { cascade: true })
   cart: Cart;
 
-  @CreateDateColumn()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Transform(({ value }) => value.toISOString())
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+  @Transform(({ value }) => value.toISOString())
   updatedAt: Date;
 }

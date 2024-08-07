@@ -1,9 +1,8 @@
-// src/cart/cart.service.ts
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cart } from './cart.entity';
-import { CartItem } from './cartitem.entity';
+import { CartItem } from './cart-Item.entity';
 import { User } from '../user/user.entity';
 import { Product } from '../shop/entities/product.entity';
 
@@ -11,47 +10,68 @@ import { Product } from '../shop/entities/product.entity';
 export class CartService {
   constructor(
     @InjectRepository(Cart)
-    private cartRepository: Repository<Cart>,
+    private readonly cartRepository: Repository<Cart>,
     @InjectRepository(CartItem)
-    private cartItemRepository: Repository<CartItem>
+    private readonly cartItemRepository: Repository<CartItem>,
+    @InjectRepository(Product)
+    private readonly productRepository: Repository<Product>,
   ) {}
 
-  async addToCart(user: User, product: Product, quantity: number): Promise<Cart> {
-    let cart = await this.cartRepository.findOne({ where: { user }, relations: ['items', 'items.product'] });
+  async createCart(user: User): Promise<Cart> {
+    const cart = this.cartRepository.create({ firebaseUid: user.firebaseUid, user, items: [] });
+    return this.cartRepository.save(cart);
+  }
 
+  async addItemToCart(user: User, productId: number, quantity: number): Promise<Cart> {
+    let cart = await this.cartRepository.findOne({ where: { firebaseUid: user.firebaseUid }, relations: ['items'] });
     if (!cart) {
-      cart = new Cart();
-      cart.user = user;
-      cart.items = [];
+      cart = await this.createCart(user);
     }
 
-    let cartItem = cart.items.find(item => item.product.id === product.id);
-
+    const product = await this.productRepository.findOneBy({id: productId});
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+    
+    let cartItem = cart.items.find(item => item.id === productId);
     if (cartItem) {
       cartItem.quantity += quantity;
-      cartItem.totalPrice = cartItem.quantity * product.price;
     } else {
-      cartItem = new CartItem();
-      cartItem.cart = cart;
-      cartItem.product = product;
-      cartItem.quantity = quantity;
-      cartItem.totalPrice = product.price * quantity;
+      cartItem = this.cartItemRepository.create({ cart, product, quantity });
       cart.items.push(cartItem);
     }
 
     await this.cartItemRepository.save(cartItem);
-    return this.cartRepository.save(cart);
+     return this.cartRepository.save(cart);
   }
 
-  async findCartByUser(user: User): Promise<Cart> {
-    return this.cartRepository.findOne({ where: { user }, relations: ['items', 'items.product'] });
-  }
-
-  async removeCartItem(user: User, productId: number): Promise<void> {
-    const cart = await this.cartRepository.findOne({ where: { user }, relations: ['items'] });
-    if (cart) {
-      cart.items = cart.items.filter(item => item.product.id !== productId);
-      await this.cartRepository.save(cart);
+  async removeItemFromCart(user: User, productId: number): Promise<Cart> {
+    let cart = await this.cartRepository.findOne({ where: { firebaseUid: user.firebaseUid }, relations: ['items'] });
+    if (!cart) {
+      throw new NotFoundException('Cart not found');
     }
+
+    cart.items = cart.items.filter(item => item.id !== productId);
+    await this.cartRepository.save(cart);
+    return cart;
+  }
+
+  async clearCart(user: User): Promise<Cart> {
+    let cart = await this.cartRepository.findOne({ where: { firebaseUid: user.firebaseUid }, relations: ['items'] });
+    if (!cart) {
+      throw new NotFoundException('Cart not found');
+    }
+
+    cart.items = [];
+    await this.cartRepository.save(cart);
+    return cart;
+  }
+
+  async getCart(user: User){
+    const cart = await this.cartRepository.findOne({ where: { firebaseUid: user.firebaseUid }, relations: ['items'] });
+    if (!cart) {
+      throw new NotFoundException('Cart not found');
+    }
+    return cart;
   }
 }

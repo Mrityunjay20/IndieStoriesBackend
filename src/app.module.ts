@@ -9,7 +9,8 @@ import { AdminModule } from './admin/admin.module';
 import { UserModule } from './user/user.module';
 import { User } from './user/user.entity';
 import { Cart } from './cart/cart.entity';
-import { CartItem } from './cart/cartitem.entity';
+import { CartItem } from './cart/cart-Item.entity';
+import { OrdersModule } from './orders/orders.module';
 
 
 @Module({
@@ -24,6 +25,6 @@ import { CartItem } from './cart/cartitem.entity';
     database: 'testdb',
     entities: [Product, User, Cart, CartItem],
     synchronize: true  //only to use in development enviornment NEVER IN production
-  }), CartModule, UserModule, AdminModule],
+  }), CartModule, UserModule, AdminModule, OrdersModule],
 })
 export class AppModule {}

@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/commo
 import { createProductDto } from './dtos/create-product.dto';
 import { deleteProductDto } from './dtos/delete-product.dto';
 import { updateProductDto } from './dtos/update-product.dto';
+import { Product } from './entities/product.entity';
 import { ShopService } from './services/shop.service';
 
 @Controller('shop')
@@ -39,7 +40,7 @@ export class ShopController {
     }
 
     @Patch('updateproduct')
-    async updateProduct(@Body() body: updateProductDto ) {
+    async updateProduct(@Body() body: Partial<Product> ) {
         const id = body.id;
         return await this.shopService.updateProduct(id,body);
     }

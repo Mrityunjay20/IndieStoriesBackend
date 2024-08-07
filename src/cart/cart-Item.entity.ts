@@ -1,5 +1,4 @@
-// src/cart/cart-item.entity.ts
-import { Entity, PrimaryGeneratedColumn, ManyToOne, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Cart } from './cart.entity';
 import { Product } from '../shop/entities/product.entity';
 
@@ -14,15 +13,6 @@ export class CartItem {
   @ManyToOne(() => Product)
   product: Product;
 
-  @Column('int')
+  @Column()
   quantity: number;
-
-  @Column('decimal', { precision: 10, scale: 2 })
-  totalPrice: number;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 }
