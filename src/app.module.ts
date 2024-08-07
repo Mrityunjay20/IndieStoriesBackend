@@ -5,8 +5,12 @@ import { ShopModule } from './shop/shop.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './shop/entities/product.entity';
 import { CartModule } from './cart/cart.module';
-import { UserModule } from './user/user.module';
 import { AdminModule } from './admin/admin.module';
+import { UserModule } from './user/user.module';
+import { User } from './user/user.entity';
+import { Cart } from './cart/cart.entity';
+import { CartItem } from './cart/cartitem.entity';
+
 
 @Module({
   controllers: [AppController],
@@ -18,7 +22,7 @@ import { AdminModule } from './admin/admin.module';
     username: 'root',
     password: 'mrityunjaymanas',
     database: 'testdb',
-    entities: [Product],
+    entities: [Product, User, Cart, CartItem],
     synchronize: true  //only to use in development enviornment NEVER IN production
   }), CartModule, UserModule, AdminModule],
 })

@@ -1,40 +1,34 @@
-import { Controller, Post } from '@nestjs/common';
+// src/user/user.controller.ts
+import { Controller, Post, Body, Get, Param, ConflictException } from '@nestjs/common';
 import { UserService } from './user.service';
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { User } from './user.entity';
+import { createUserDto } from './dtos/create-user.dto';
+import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
 
 @Controller('user')
 export class UserController {
-  constructor(private UserService: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
-  @Post('auth')
-  signup() {
-    const provider = new GoogleAuthProvider();
-    const auth = getAuth();
-    auth.languageCode = 'en';
-    provider.setCustomParameters({
-      login_hint: 'user@example.com',
-    });
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
-        console.log(token, user);
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        console.log("error: "+ errorCode+ errorMessage+email+credential);
-        // ...
-      });
+  @Get("/:email")
+  async oneUsers(@Param("email") email: string){
+    return await this.userService.findUser(email);
   }
+
+  @Get()
+  async allUsers(){
+    return await this.userService.findallUser();
+  }
+
+  @Post('signup')
+  async signUp(@Body() body: createUserDto){
+    console.log("hello "+body.email, body.firebaseUid);
+    const exists = await this.userService.findUser(body.email);
+    if(exists){
+      throw new ConflictException;
+    }else{
+      return await this.userService.createUser(body.email, body.firebaseUid);
+    }
+  }
+
+  // Other controller methods (e.g., login) can go here
 }

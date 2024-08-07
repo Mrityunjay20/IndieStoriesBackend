@@ -1,4 +1,3 @@
-import { DefaultValuePipe } from '@nestjs/common';
 import { Transform } from 'class-transformer';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
@@ -42,6 +41,9 @@ export class Product {
 
   @Column('decimal', { precision: 10, scale: 2 })
   price: number;
+
+  @Column('decimal',{precision: 10, scale: 2,  nullable:true })
+  discountprice: number;
 
   @Column('json')
   imageUrl: string[];

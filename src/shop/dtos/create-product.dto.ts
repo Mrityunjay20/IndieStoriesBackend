@@ -38,6 +38,9 @@ export class createProductDto{
     @IsNumber()
     price:number;
 
+    @IsNumber()
+    discountprice:number;
+
     @IsArray()
     @IsString({ each: true })
     @IsUrl({}, { each: true })  // Optional: To validate each string as a valid URL

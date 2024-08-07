@@ -38,6 +38,7 @@ export class ShopService {
     video1: string,
     video2: string,
     price: number,
+    discountprice:number,
     imageUrl: string[],
     bannerUrl: string,
   ): Promise<Product> {
@@ -54,6 +55,7 @@ export class ShopService {
       video1,
       video2,
       price,
+      discountprice,
       imageUrl,
       bannerUrl,
     });

@@ -33,6 +33,7 @@ export class ShopController {
             body.video1, 
             body.video2 ,
             body.price,
+            body.discountprice,
             body.imageUrl,
             body.bannerUrl);
     }

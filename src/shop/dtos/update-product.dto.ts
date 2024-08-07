@@ -44,6 +44,10 @@ export class updateProductDto {
   price?: number;
 
   @IsOptional()
+  @IsDecimal()
+  discountprice?: number;
+
+  @IsOptional()
   @IsArray()
   imageUrl?: string[];
 
