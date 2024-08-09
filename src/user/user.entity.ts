@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
 import { Cart } from '../cart/cart.entity';
 
 @Entity()
@@ -20,10 +20,10 @@ export class User {
   cart: Cart;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  @Transform(({ value }) => value.toISOString())
+  @Transform(({ value }) => value instanceof Date ? value.toISOString() : value)
   createdAt: Date;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-  @Transform(({ value }) => value.toISOString())
+  @Transform(({ value }) => value instanceof Date ? value.toISOString() : value)
   updatedAt: Date;
 }

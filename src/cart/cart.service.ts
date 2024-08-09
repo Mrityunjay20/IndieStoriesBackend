@@ -5,6 +5,7 @@ import { Cart } from './cart.entity';
 import { CartItem } from './cart-Item.entity';
 import { User } from '../user/user.entity';
 import { Product } from '../shop/entities/product.entity';
+import { threadId } from 'worker_threads';
 
 @Injectable()
 export class CartService {
@@ -45,15 +46,19 @@ export class CartService {
      return this.cartRepository.save(cart);
   }
 
-  async removeItemFromCart(user: User, productId: number): Promise<Cart> {
+  async removeItemFromCart(user: User, productId: number) {
+    console.log("remove function called"+ productId);
     let cart = await this.cartRepository.findOne({ where: { firebaseUid: user.firebaseUid }, relations: ['items'] });
     if (!cart) {
       throw new NotFoundException('Cart not found');
     }
 
-    cart.items = cart.items.filter(item => item.id !== productId);
-    await this.cartRepository.save(cart);
-    return cart;
+    const product = await this.cartItemRepository.findOneBy({"id":productId});
+    if(!product){
+      throw new NotFoundException('product not found');
+    }
+    
+    return await this.cartItemRepository.remove(product);
   }
 
   async clearCart(user: User): Promise<Cart> {
@@ -68,10 +73,17 @@ export class CartService {
   }
 
   async getCart(user: User){
-    const cart = await this.cartRepository.findOne({ where: { firebaseUid: user.firebaseUid }, relations: ['items'] });
+    console.log("cart service "+user.firebaseUid);
+    const cart = await this.cartRepository.findOne({
+      where: {firebaseUid: user.firebaseUid },
+      relations: ['items', 'items.product']  // Load related CartItems and their associated Products
+    });
+
     if (!cart) {
-      throw new NotFoundException('Cart not found');
+      throw new NotFoundException("cart not found");
+
     }
-    return cart;
+
+    return (cart.items);
   }
 }

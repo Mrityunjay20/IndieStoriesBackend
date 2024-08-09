@@ -11,6 +11,8 @@ import { User } from './user/user.entity';
 import { Cart } from './cart/cart.entity';
 import { CartItem } from './cart/cart-Item.entity';
 import { OrdersModule } from './orders/orders.module';
+import { CustomerOrders } from './orders/Order.entity';
+import { OrderItem } from './orders/OrderItem.entity';
 
 
 @Module({
@@ -23,7 +25,7 @@ import { OrdersModule } from './orders/orders.module';
     username: 'root',
     password: 'mrityunjaymanas',
     database: 'testdb',
-    entities: [Product, User, Cart, CartItem],
+    entities: [Product, User, Cart, CartItem, CustomerOrders, OrderItem],
     synchronize: true  //only to use in development enviornment NEVER IN production
   }), CartModule, UserModule, AdminModule, OrdersModule],
 })

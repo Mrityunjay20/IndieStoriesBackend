@@ -1,5 +1,5 @@
 // src/user/user.service.ts
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
@@ -14,7 +14,7 @@ export class UserService {
   async findUser(email:string){
     const result = await this.usersRepository.findOneBy({"email":email})
     if(!result){
-      return null
+      return null;
     }
     return result;
   }
@@ -30,8 +30,10 @@ export class UserService {
 
   async forSignup(email:string){
     const result = await this.usersRepository.findOneBy({"email":email})
+    
     if(result){
-      return true;
+      console.log("bad req");
+      throw new ConflictException("User already exists");
     }
     return false;
   }

@@ -1,4 +1,4 @@
-import { Controller, Post, Delete, Body, Param, Get, UseGuards } from '@nestjs/common';
+import { Controller, Post, Delete, Body, Param, Get, UseGuards, BadRequestException, ParseIntPipe } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { User } from '../user/user.entity';
 import { Cart } from './cart.entity';
@@ -13,17 +13,24 @@ export class CartController {
     return this.cartService.createCart(user);
   }
   @Post()
-  getCart(@Body() user: User) {
-    console.log(user);
-    return this.cartService.getCart(user);
+  async getCart(@Body() user: User) {
+    const result = await this.cartService.getCart(user);
+    console.log(result);
+    return result;
   }
 
   @Post('add/:productId')
   async addItemToCart(
-    @Param('productId') productId: number,
+    @Param('productId', ParseIntPipe) productId: number,
     @Body() createCartDto: CreateCartDto
   ) {
     const { user, quantity } = createCartDto;
+
+    // Validate quantity
+    if (quantity < 1) {
+      throw new BadRequestException('Quantity must be greater than 0');
+    }
+
     return this.cartService.addItemToCart(user, productId, quantity);
   }
 

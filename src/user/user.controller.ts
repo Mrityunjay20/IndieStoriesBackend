@@ -3,6 +3,7 @@ import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 import { createUserDto } from './dtos/create-user.dto';
 import { CartService } from 'src/cart/cart.service';
+import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
 
 @Controller('user')
 export class UserController {
@@ -22,12 +23,13 @@ export class UserController {
   @Post('signup')
   async signUp(@Body() body: createUserDto){
     const exists = await this.userService.forSignup(body.email);
-    if(exists){
-      return "user already exists";
-    }else{
+    if(!exists){
       const user = await this.userService.createUser(body.email, body.firebaseUid);
       await this.cartService.createCart(user);
       return user; 
+    }
+    else{
+      throw new ExceptionsHandler;
     }
   }
 
