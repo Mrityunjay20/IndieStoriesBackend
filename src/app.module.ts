@@ -26,7 +26,7 @@ import { OrderItem } from './orders/OrderItem.entity';
     password: "mrityunjaymanasMS21@",
     database: 'u570438390_testdb',
     entities: [Product, User, Cart, CartItem, CustomerOrders, OrderItem],
-    synchronize: true  //only to use in development enviornment NEVER IN production
+    synchronize: false  //only to use in development enviornment NEVER IN production
   }), CartModule, UserModule, AdminModule, OrdersModule],
 })
 export class AppModule {}
