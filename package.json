@@ -17,8 +17,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "cross-env NODE_ENV=developemnt node --require ts-node/register ./node_modules/typeorm/cli.js"
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -35,7 +34,6 @@
     "firebaseui": "^6.1.0",
     "mysql": "^2.18.1",
     "mysql2": "^3.11.0",
-    "pg": "^8.12.0",
     "razorpay": "^2.9.4",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
