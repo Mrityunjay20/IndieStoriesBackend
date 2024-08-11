@@ -19,15 +19,14 @@ import { OrderItem } from './orders/OrderItem.entity';
   controllers: [AppController],
   providers: [AppService],
   imports: [ShopModule, TypeOrmModule.forRoot({
-    type: 'postgres',
-    host: process.env.DB_HOST || 'localhost',
-    port: parseInt(process.env.DB_PORT, 10) || 5432,
-    username: process.env.DB_USER || 'your_postgres_user',
-    password: process.env.DB_PASSWORD || 'your_postgres_password',
-    database: process.env.DB_NAME || 'your_postgres_db',
+    type: 'mysql',
+    host: 'srv1326.hstgr.io',
+    port: 3306,
+    username: "u570438390_root",
+    password: "mrityunjaymanasMS21@",
+    database: 'u570438390_testdb',
     entities: [Product, User, Cart, CartItem, CustomerOrders, OrderItem],
-    synchronize: false,  // Set to false in production
-    logging: true,      //only to use in development enviornment NEVER IN production
+    synchronize: true  //only to use in development enviornment NEVER IN production
   }), CartModule, UserModule, AdminModule, OrdersModule],
 })
 export class AppModule {}
