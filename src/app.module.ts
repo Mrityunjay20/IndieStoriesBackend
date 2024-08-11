@@ -22,8 +22,8 @@ import { OrderItem } from './orders/OrderItem.entity';
     type: 'mysql',
     host: 'localhost',
     port: 3306,
-    username: 'root',
-    password: 'mrityunjaymanas',
+    username: "root",
+    password: "mrityunjaymanas",
     database: 'testdb',
     entities: [Product, User, Cart, CartItem, CustomerOrders, OrderItem],
     synchronize: true  //only to use in development enviornment NEVER IN production

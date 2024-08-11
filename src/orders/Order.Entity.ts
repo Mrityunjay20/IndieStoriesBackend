@@ -17,4 +17,11 @@ export class CustomerOrders {
 
     @Column('decimal', { precision: 10, scale: 2 })
     totalAmount: number;
+
+    @Column({ nullable: true })
+    razorpayOrderId: string | null;
+
+    @Column({default:"failed", nullable:true})
+    paymentStatus:string;
+
 }
