@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { OrderItem } from './order-Item.entity';
+import { OrderItem } from './order-item.entity';
 
 @Entity()
-export class CustomerOrders {
+export class Order {
     @PrimaryGeneratedColumn()
     id: number;
 

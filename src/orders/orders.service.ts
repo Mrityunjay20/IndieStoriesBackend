@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { OrderItem } from './order-Item.entity';
-import { CustomerOrders } from './order.entity';
+import { OrderItem } from './order-item.entity';
+import { Order } from './order.entity';
 import { User } from 'src/user/user.entity';
 import { Product } from 'src/shop/entities/product.entity';
 
@@ -11,8 +11,8 @@ const Razorpay = require('razorpay');
 export class OrdersService {
   private razorpay: any;
   constructor(
-    @InjectRepository(CustomerOrders)
-    private readonly orderRepository: Repository<CustomerOrders>,
+    @InjectRepository(Order)
+    private readonly orderRepository: Repository<Order>,
     @InjectRepository(OrderItem)
     private readonly orderItemRepository: Repository<OrderItem>,
     @InjectRepository(User)
