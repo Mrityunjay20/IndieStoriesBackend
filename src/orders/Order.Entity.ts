@@ -23,5 +23,4 @@ export class Order {
 
     @Column({default:"failed", nullable:true})
     paymentStatus:string;
-
 }
