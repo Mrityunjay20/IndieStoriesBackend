@@ -10,6 +10,8 @@ import { Product } from 'src/shop/entities/product.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([CustomerOrders, OrderItem,User, Product])],
   providers: [OrdersService],
-  controllers: [OrdersController]
+  controllers: [OrdersController],
+  exports:[OrdersService]
+
 })
 export class OrdersModule {}
