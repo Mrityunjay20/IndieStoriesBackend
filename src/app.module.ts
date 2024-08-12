@@ -12,7 +12,7 @@ import { Cart } from './cart/cart.entity';
 import { CartItem } from './cart/cart-Item.entity';
 import { OrdersModule } from './orders/orders.module';
 import { CustomerOrders } from './orders/Order.entity';
-import { OrderItem } from './orders/OrderItem.entity';
+import { OrderItem } from './orders/Order-Item.entity';
 
 
 @Module({
