@@ -6,7 +6,7 @@ export class OrderItem {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Order, (order) => order.items)
+    @ManyToOne(() => Order, (order:Order) => order.items) // Reference back to Order
     order: Order;
 
     @Column()

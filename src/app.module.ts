@@ -20,11 +20,11 @@ import { OrderItem } from './orders/order-item.entity';
   providers: [AppService],
   imports: [ShopModule, TypeOrmModule.forRoot({
     type: 'mysql',
-    host: 'freedomainfortestingtheadults.online',
-    port: parseInt(process.env.PORT),
-    username: "u570438390_root",
-    password: "mrityunjaymanasMS21@",
-    database: 'u570438390_testdb',
+    host: 'localhost',
+    port: 3306,
+    username: 'root',
+    password: 'mrityunjaymanas',
+    database: 'testdb',
     entities: [Product, User, Cart, CartItem, Order, OrderItem],
     synchronize: false  //only to use in development enviornment NEVER IN production
   }), CartModule, UserModule, AdminModule, OrdersModule],
