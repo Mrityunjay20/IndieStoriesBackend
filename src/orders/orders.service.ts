@@ -30,7 +30,7 @@ export class OrdersService {
     // Construct the order object with the billing details
     const orderObject = {
       Name: `${OrderInfo.firstName} ${OrderInfo.lastName}`,
-      CompanyName: OrderInfo.companyName || null,
+      //CompanyName: OrderInfo.companyName || null,
       Country: OrderInfo.country,
       StreetAddress: `${OrderInfo.streetAddress}, ${OrderInfo.apartment || ''}`,
       City: OrderInfo.city,
@@ -59,10 +59,22 @@ export class OrdersService {
       }),
     );
 
-    const finalAmount = allProducts.reduce(
-      (acc, product) => acc + product.totalPrice,
-      0,
-    );
+    //Adds 25 rupees if order is cash on delivery
+
+    let finalAmount =0;
+
+    if(orderObject.PaymentMethod == "cashOnDelivery"){
+     finalAmount = allProducts.reduce(
+        (acc, product) => acc + product.totalPrice + 25 ,
+        0,
+      );
+    }else{
+      finalAmount = allProducts.reduce(
+        (acc, product) => acc + product.totalPrice,
+        0,
+      );
+    }
+    
 
     const totalAmount: number = parseInt(
       (finalAmount + finalAmount * 0.028).toFixed(0),
